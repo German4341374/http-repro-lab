@@ -1,0 +1,35 @@
+{
+  "name": "@http-repro-lab/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "11.1.0",
+    "@fastify/helmet": "13.0.2",
+    "fastify": "5.12.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.1",
+    "@types/node": "24.10.1",
+    "@vitest/coverage-v8": "4.1.11",
+    "eslint": "9.39.1",
+    "prettier": "3.7.4",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.48.1",
+    "vitest": "4.1.11"
+  }
+}

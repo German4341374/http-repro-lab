@@ -1,13 +1,13 @@
 # Build outputs
 /bin/
-/dist/
-/coverage/
+**/dist/
+**/coverage/
 *.exe
 *.test
 
 # Dependencies and caches
 node_modules/
-.venv/
+**/.venv/
 __pycache__/
 .pytest_cache/
 .mypy_cache/
@@ -39,4 +39,3 @@ data/
 .vscode/
 .DS_Store
 Thumbs.db
-
