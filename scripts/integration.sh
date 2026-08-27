@@ -32,5 +32,5 @@ else
   code=$?
   [ "$code" -eq 1 ] || exit "$code"
 fi
-grep -q 'header.content-type' .repro-workspace/integration/comparison.json
-grep -q 'json.$.id' .repro-workspace/integration/comparison.json
+grep -Fq 'header.content-type' .repro-workspace/integration/comparison.json
+grep -Fq 'json.$.id' .repro-workspace/integration/comparison.json

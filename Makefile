@@ -16,16 +16,16 @@ format:
 
 lint:
 	test -z "$$(gofmt -l cmd internal)"
-	go vet ./...
+	go vet ./cmd/... ./internal/...
 	cd apps/api && npm run format:check && npm run lint
 	tools/request-minimizer-python/.venv/bin/ruff check tools/request-minimizer-python
 
 typecheck:
 	cd apps/api && npm run typecheck
-	tools/request-minimizer-python/.venv/bin/mypy --config-file tools/request-minimizer-python/pyproject.toml
+	cd tools/request-minimizer-python && .venv/bin/mypy
 
 test:
-	go test -race ./...
+	go test -race ./cmd/... ./internal/...
 	cd apps/api && npm test
 	tools/request-minimizer-python/.venv/bin/pytest tools/request-minimizer-python
 	dotnet test runners/dotnet-repro-runner/tests/HttpRepro.Runner.Tests --configuration Release
@@ -51,4 +51,3 @@ down:
 clean:
 	docker compose down -v --remove-orphans
 	rm -rf .repro-workspace dist report generated
-
