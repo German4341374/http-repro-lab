@@ -15,34 +15,34 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v4
         with: { fail-on-severity: high }
   secrets:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with: { fetch-depth: 0 }
-      - uses: gitleaks/gitleaks-action@dcedce43c6f43de0b836d1fe38946645c9c638dc # v2
+      - uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
         env: { GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }
   filesystem:
     runs-on: ubuntu-24.04
     permissions: { contents: read, security-events: write }
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: aquasecurity/trivy-action@d2a0b60797ff03db6132bd4e2b293f9b37081297
         with: { scan-type: fs, scan-ref: ., format: sarif, output: trivy.sarif, severity: 'HIGH,CRITICAL', ignore-unfixed: true, exit-code: '1' }
       - if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-        uses: github/codeql-action/upload-sarif@5ba2889ada762081db2c4f32a729827dce632c7b # v3
+        uses: github/codeql-action/upload-sarif@6f5948dfacef28e207b48d0905cf90c03365536d # v3
         with: { sarif_file: trivy.sarif }
   codeql:
     runs-on: ubuntu-24.04
     permissions: { contents: read, security-events: write }
     strategy: { fail-fast: false, matrix: { language: ['go', 'javascript-typescript', 'python', 'csharp', 'java-kotlin'] } }
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: github/codeql-action/init@5ba2889ada762081db2c4f32a729827dce632c7b # v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: github/codeql-action/init@6f5948dfacef28e207b48d0905cf90c03365536d # v3
         with: { languages: '${{ matrix.language }}' }
-      - uses: github/codeql-action/autobuild@5ba2889ada762081db2c4f32a729827dce632c7b # v3
-      - uses: github/codeql-action/analyze@5ba2889ada762081db2c4f32a729827dce632c7b # v3
+      - uses: github/codeql-action/autobuild@6f5948dfacef28e207b48d0905cf90c03365536d # v3
+      - uses: github/codeql-action/analyze@6f5948dfacef28e207b48d0905cf90c03365536d # v3
 
