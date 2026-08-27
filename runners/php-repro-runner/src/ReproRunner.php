@@ -24,6 +24,10 @@ final class ReproRunner
         if ($timeoutMs < 1) {
             throw new \InvalidArgumentException('Timeout must be positive.');
         }
+        $normalizedMethod = strtoupper(trim($method));
+        if ($normalizedMethod === '') {
+            throw new \InvalidArgumentException('HTTP method must not be empty.');
+        }
         $safeHeaders = [];
         foreach ($headers as $name => $value) {
             if (!in_array(strtolower($name), ['host', 'content-length'], true)) {
@@ -34,7 +38,7 @@ final class ReproRunner
         if ($handle === false) {
             throw new \RuntimeException('Unable to initialize cURL.');
         }
-        curl_setopt_array($handle, [CURLOPT_CUSTOMREQUEST => strtoupper($method), CURLOPT_HTTPHEADER => $safeHeaders, CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => false, CURLOPT_TIMEOUT_MS => $timeoutMs, CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => 2]);
+        curl_setopt_array($handle, [CURLOPT_CUSTOMREQUEST => $normalizedMethod, CURLOPT_HTTPHEADER => $safeHeaders, CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => false, CURLOPT_TIMEOUT_MS => $timeoutMs, CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => 2]);
         if ($body !== null) { curl_setopt($handle, CURLOPT_POSTFIELDS, $body); }
         $started = hrtime(true);
         $responseBody = curl_exec($handle);
