@@ -24,7 +24,6 @@ COPY fixtures ./fixtures
 RUN /out/http-repro analyze fixtures/auth-401.har --output /report
 
 FROM nginxinc/nginx-unprivileged:1.29.3-alpine3.22 AS web
-COPY --from=report-build /report /usr/share/nginx/html
+COPY --from=report-build --chown=101:101 --chmod=0555 /report /usr/share/nginx/html
 USER 101:101
 EXPOSE 8080
-
