@@ -15,7 +15,9 @@ final class ReproRunner
         if ($url === '') {
             throw new \InvalidArgumentException('URL must not be empty.');
         }
-        $scheme = parse_url($url, PHP_URL_SCHEME);
+        /** @var non-empty-string $validatedUrl */
+        $validatedUrl = $url;
+        $scheme = parse_url($validatedUrl, PHP_URL_SCHEME);
         if (!is_string($scheme) || !in_array($scheme, ['http', 'https'], true)) {
             throw new \InvalidArgumentException('Only HTTP and HTTPS URLs are supported.');
         }
@@ -28,7 +30,7 @@ final class ReproRunner
                 $safeHeaders[] = $name . ': ' . $value;
             }
         }
-        $handle = curl_init($url);
+        $handle = curl_init($validatedUrl);
         if ($handle === false) {
             throw new \RuntimeException('Unable to initialize cURL.');
         }

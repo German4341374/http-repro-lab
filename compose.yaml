@@ -27,7 +27,7 @@ services:
       HTTP_REPRO_PORT: 8080
       DATABASE_URL: postgres://http_repro:${POSTGRES_PASSWORD:-local-development-only}@postgres:5432/http_repro?sslmode=disable
     ports: ["127.0.0.1:${HTTP_REPRO_API_PORT:-8080}:8080"]
-    networks: [backend]
+    networks: [backend, frontend]
     depends_on: { postgres: { condition: service_healthy } }
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
@@ -58,7 +58,7 @@ services:
   mock-api:
     build: { context: ., target: mock-api }
     ports: ["127.0.0.1:${HTTP_REPRO_MOCK_PORT:-9090}:9090"]
-    networks: [backend]
+    networks: [backend, frontend]
     healthcheck:
       test: ["CMD", "/usr/local/bin/mock-api", "--healthcheck"]
       interval: 10s
@@ -75,4 +75,3 @@ networks:
   backend: { internal: true }
 volumes:
   postgres-data: {}
-
