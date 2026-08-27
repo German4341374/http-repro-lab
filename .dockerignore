@@ -1,0 +1,14 @@
+.git
+.github
+**/node_modules
+**/.venv
+**/vendor
+**/target
+**/bin
+**/obj
+**/coverage
+**/dist
+.repro-workspace
+docs
+deploy
+
