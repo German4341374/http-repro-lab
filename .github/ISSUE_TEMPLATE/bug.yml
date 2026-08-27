@@ -1,0 +1,27 @@
+name: Bug report
+description: Report reproducible incorrect behavior using synthetic data.
+title: "bug: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes: { value: "Use synthetic fixtures only. Remove credentials, host inventory, and personal data." }
+  - type: textarea
+    id: behavior
+    attributes: { label: Observed behavior, description: Include the command and exact error code. }
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes: { label: Expected behavior }
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes: { label: Version or commit }
+    validations: { required: true }
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I used only synthetic or manually reviewed sanitized data.
+          required: true
+

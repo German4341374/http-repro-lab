@@ -1,0 +1,40 @@
+name: Integration
+on:
+  pull_request:
+  push:
+    branches: [main]
+concurrency:
+  group: integration-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  vertical-slice:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with: { go-version: '1.26.7', cache: true }
+      - run: chmod +x scripts/integration.sh && ./scripts/integration.sh
+      - name: Upload offline report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with: { name: integration-report, path: .repro-workspace/integration/report, if-no-files-found: warn, retention-days: 7 }
+  postgres:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17.6-alpine3.22
+        env: { POSTGRES_DB: http_repro, POSTGRES_USER: http_repro, POSTGRES_PASSWORD: synthetic-ci-password }
+        options: >-
+          --health-cmd "pg_isready -U http_repro -d http_repro"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+        ports: ['5432:5432']
+    env: { PGPASSWORD: synthetic-ci-password }
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Apply migrations
+        run: for file in database/migrations/*.sql; do psql -h 127.0.0.1 -U http_repro -d http_repro -v ON_ERROR_STOP=1 -f "$file"; done
+      - name: Load synthetic seed and smoke test
+        run: psql -h 127.0.0.1 -U http_repro -d http_repro -v ON_ERROR_STOP=1 -f database/seed/001_synthetic.sql -f database/tests/smoke.sql
+

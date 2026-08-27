@@ -1,0 +1,21 @@
+name: Unsupported HAR
+description: Report a HAR structure the importer cannot normalize.
+title: "har: support "
+labels: [har, enhancement, triage]
+body:
+  - type: textarea
+    id: shape
+    attributes: { label: Synthetic minimal structure, render: json, description: Remove all production values. }
+    validations: { required: true }
+  - type: textarea
+    id: error
+    attributes: { label: Parser error }
+    validations: { required: true }
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: This issue contains no real capture data.
+          required: true
+

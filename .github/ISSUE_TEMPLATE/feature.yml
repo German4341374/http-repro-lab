@@ -1,0 +1,18 @@
+name: Feature proposal
+description: Propose one focused workflow improvement.
+title: "feat: "
+labels: [enhancement, triage]
+body:
+  - type: textarea
+    id: problem
+    attributes: { label: User problem, description: Describe the diagnostic problem before the solution. }
+    validations: { required: true }
+  - type: textarea
+    id: workflow
+    attributes: { label: Safe proposed workflow }
+    validations: { required: true }
+  - type: textarea
+    id: risks
+    attributes: { label: Security, privacy, and compatibility risks }
+    validations: { required: true }
+

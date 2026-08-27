@@ -1,0 +1,30 @@
+name: Reusable Core
+on:
+  workflow_call:
+    inputs:
+      upload-binary:
+        required: false
+        default: false
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  go-core:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with: { go-version: '1.26.7', cache: true }
+      - name: Verify formatting
+        run: test -z "$(gofmt -l cmd internal)"
+      - name: Vet
+        run: go vet ./cmd/... ./internal/...
+      - name: Test with race detector
+        run: go test -race -coverprofile=coverage.out ./cmd/... ./internal/...
+      - name: Build CLI
+        run: go build -trimpath -o dist/http-repro ./cmd/http-repro
+      - name: Upload CLI
+        if: inputs.upload-binary
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with: { name: http-repro-linux-amd64, path: dist/http-repro, retention-days: 7 }
+

@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/German4341374/http-repro-lab/security/advisories/new
+    about: Never attach a production capture or credential to a public issue.
+

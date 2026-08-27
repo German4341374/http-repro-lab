@@ -1,0 +1,18 @@
+name: Generator bug
+description: Report semantic mismatch in generated client code.
+title: "generator: "
+labels: [generator, bug, triage]
+body:
+  - type: dropdown
+    id: language
+    attributes: { label: Language, options: [cURL, JavaScript, TypeScript, Python, Go, Java, C#, PHP] }
+    validations: { required: true }
+  - type: textarea
+    id: request
+    attributes: { label: Synthetic RequestSpec, render: json }
+    validations: { required: true }
+  - type: textarea
+    id: difference
+    attributes: { label: Observed semantic difference }
+    validations: { required: true }
+
