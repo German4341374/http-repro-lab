@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1",
+  "method": "POST",
+  "url": {
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 9090,
+    "path": "/echo",
+    "query": [{ "name": "scenario", "value": "semantic-parity" }]
+  },
+  "headers": [
+    { "name": "Content-Type", "value": "application/json" },
+    { "name": "X-Repro-Scenario", "value": "synthetic" }
+  ],
+  "body": { "type": "json", "content": { "message": "hello", "count": 2 } },
+  "timeoutMs": 5000,
+  "provenance": { "source": "synthetic fixture", "normalization": "v1" }
+}
+

@@ -1,0 +1,12 @@
+{
+  "name": "http-repro-lab/php-repro-runner",
+  "description": "Verified PHP cURL runner for HTTP Repro Lab",
+  "type": "library",
+  "license": "Apache-2.0",
+  "require": { "php": ">=8.3", "ext-curl": "*" },
+  "require-dev": { "phpstan/phpstan": "2.2.9", "phpunit/phpunit": "12.5.34" },
+  "autoload": { "psr-4": { "HttpReproLab\\": "src/" } },
+  "autoload-dev": { "psr-4": { "HttpReproLab\\Tests\\": "tests/" } },
+  "scripts": { "test": "phpunit", "analyse": "phpstan analyse --level=max src tests" },
+  "config": { "sort-packages": true, "allow-plugins": false }
+}

@@ -1,5 +1,5 @@
 # Build outputs
-/bin/
+**/bin/
 **/dist/
 **/coverage/
 *.exe
@@ -39,3 +39,4 @@ data/
 .vscode/
 .DS_Store
 Thumbs.db
+.phpunit.result.cache
