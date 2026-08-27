@@ -36,6 +36,7 @@ public static class ReproRunner
         };
         using var client = new HttpClient(handler, disposeHandler: true) { Timeout = request.Timeout };
         using var message = new HttpRequestMessage(request.Method, request.Uri);
+        string? contentType = null;
         foreach (var header in request.Headers)
         {
             if (header.Key.Equals("Host", StringComparison.OrdinalIgnoreCase) ||
@@ -43,11 +44,21 @@ public static class ReproRunner
             {
                 continue;
             }
+            if (header.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase))
+            {
+                contentType = header.Value;
+                continue;
+            }
             message.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
         if (request.Body is not null)
         {
             message.Content = new StringContent(request.Body, Encoding.UTF8);
+            if (contentType is not null)
+            {
+                message.Content.Headers.Remove("Content-Type");
+                message.Content.Headers.TryAddWithoutValidation("Content-Type", contentType);
+            }
         }
 
         var started = TimeProvider.System.GetTimestamp();
@@ -56,4 +67,3 @@ public static class ReproRunner
         return new ReproResult((int)response.StatusCode, body, TimeProvider.System.GetElapsedTime(started));
     }
 }
-

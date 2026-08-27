@@ -130,12 +130,20 @@ func javaClient(request model.RequestSpec, body, url string) string {
 
 func csharp(request model.RequestSpec, body, url string) string {
 	var headers strings.Builder
+	contentType := ""
 	for _, header := range safeHeaders(request) {
+		if strings.EqualFold(header.Name, "Content-Type") {
+			contentType = header.Value
+			continue
+		}
 		headers.WriteString("request.Headers.TryAddWithoutValidation(" + quoted(header.Name) + ", " + quoted(header.Value) + ");\n")
 	}
 	content := ""
 	if body != "" {
 		content = "request.Content = new StringContent(" + quoted(body) + ", Encoding.UTF8);\n"
+		if contentType != "" {
+			content += "request.Content.Headers.Remove(\"Content-Type\");\nrequest.Content.Headers.TryAddWithoutValidation(\"Content-Type\", " + quoted(contentType) + ");\n"
+		}
 	}
 	return "using System.Text;\n\nusing var cancellation = new CancellationTokenSource(TimeSpan.FromMilliseconds(" + strconv.Itoa(request.TimeoutMS) + "));\nusing var handler = new HttpClientHandler { AllowAutoRedirect = false };\nusing var client = new HttpClient(handler);\nusing var request = new HttpRequestMessage(new HttpMethod(" + quoted(request.Method) + "), " + quoted(url) + ");\n" + headers.String() + content + "using var response = await client.SendAsync(request, cancellation.Token);\nvar body = await response.Content.ReadAsStringAsync(cancellation.Token);\nConsole.WriteLine($\"status={(int)response.StatusCode} body={body}\");\n"
 }

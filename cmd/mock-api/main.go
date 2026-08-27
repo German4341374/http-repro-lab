@@ -4,6 +4,7 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -12,11 +13,21 @@ import (
 )
 
 func main() {
+	if len(os.Args) > 1 && os.Args[1] == "--healthcheck" {
+		client := &http.Client{Timeout: 2 * time.Second}
+		response, err := client.Get("http://127.0.0.1:9090/health")
+		if err != nil || response.StatusCode != http.StatusOK {
+			os.Exit(1)
+		}
+		_ = response.Body.Close()
+		return
+	}
 	address := "127.0.0.1:9090"
 	if value := os.Getenv("MOCK_API_ADDR"); value != "" {
 		address = value
 	}
-	server := &http.Server{Addr: address, Handler: routes(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 15 * time.Second, IdleTimeout: 60 * time.Second}
+	variant := os.Getenv("MOCK_API_VARIANT")
+	server := &http.Server{Addr: address, Handler: routes(variant), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 15 * time.Second, IdleTimeout: 60 * time.Second}
 	slog.Info("mock API listening", "address", address)
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		slog.Error("mock API stopped", "error", err)
@@ -24,7 +35,7 @@ func main() {
 	}
 }
 
-func routes() http.Handler {
+func routes(variant string) http.Handler {
 	mux := http.NewServeMux()
 	var flaky atomic.Int64
 	mux.HandleFunc("/health", func(w http.ResponseWriter, _ *http.Request) {
@@ -34,6 +45,15 @@ func routes() http.Handler {
 	mux.HandleFunc("/ok", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		fmt.Fprint(w, `{"id":10,"status":"ok"}`)
+	})
+	mux.HandleFunc("/environment", func(w http.ResponseWriter, _ *http.Request) {
+		if variant == "production" {
+			w.Header().Set("Content-Type", "text/html")
+			fmt.Fprint(w, `{"id":"10","environment":"production"}`)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `{"id":10,"environment":"staging"}`)
 	})
 	mux.HandleFunc("/unauthorized", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("WWW-Authenticate", `Bearer realm="demo"`)
@@ -70,8 +90,9 @@ func routes() http.Handler {
 	})
 	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
+		body, _ := io.ReadAll(io.LimitReader(r.Body, 1<<20))
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]any{"method": r.Method, "path": r.URL.Path, "query": r.URL.Query(), "headers": r.Header})
+		json.NewEncoder(w).Encode(map[string]any{"method": r.Method, "path": r.URL.Path, "query": r.URL.Query(), "headers": r.Header, "body": string(body)})
 	})
 	mux.HandleFunc("/idempotency", func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("Idempotency-Key") == "" {

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1",
+  "method": "GET",
+  "url": {
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 9090,
+    "path": "/environment",
+    "query": []
+  },
+  "headers": [{ "name": "Accept", "value": "application/json" }],
+  "body": { "type": "none" },
+  "timeoutMs": 5000,
+  "provenance": { "source": "synthetic environment comparison" }
+}
+
