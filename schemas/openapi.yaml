@@ -1,0 +1,78 @@
+openapi: 3.1.0
+info:
+  title: HTTP Repro Lab Local API
+  version: 0.1.0
+  description: Implemented local analysis-session endpoints. Planned endpoints are intentionally omitted.
+servers:
+  - url: http://127.0.0.1:8080
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        '200': { description: Healthy, content: { application/json: { schema: { $ref: '#/components/schemas/Status' } } } }
+  /ready:
+    get:
+      operationId: ready
+      responses:
+        '200': { description: Ready }
+  /metrics:
+    get:
+      operationId: metrics
+      responses:
+        '200': { description: Prometheus text }
+  /api/v1/analyses:
+    post:
+      operationId: createAnalysis
+      requestBody: { required: true, content: { application/json: { schema: { type: object } } } }
+      responses:
+        '201': { description: Session created }
+        '400': { $ref: '#/components/responses/Invalid' }
+  /api/v1/analyses/{id}:
+    get:
+      operationId: getAnalysis
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses:
+        '200': { description: Analysis session }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/analyses/{id}/requests:
+    get:
+      operationId: listRequests
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { name: page, in: query, schema: { type: integer, minimum: 1 } }
+        - { name: pageSize, in: query, schema: { type: integer, minimum: 1, maximum: 100 } }
+        - { name: q, in: query, schema: { type: string } }
+      responses: { '200': { description: Paginated requests }, '404': { $ref: '#/components/responses/NotFound' } }
+  /api/v1/analyses/{id}/findings:
+    get:
+      operationId: listFindings
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { name: severity, in: query, schema: { type: string } }
+      responses: { '200': { description: Findings }, '404': { $ref: '#/components/responses/NotFound' } }
+  /api/v1/analyses/{id}/events:
+    get:
+      operationId: analysisEvents
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses: { '200': { description: Server-sent completion event }, '404': { $ref: '#/components/responses/NotFound' } }
+components:
+  parameters:
+    Id: { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+  schemas:
+    Status:
+      type: object
+      required: [status]
+      properties: { status: { type: string } }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, requestId]
+          properties: { code: { type: string }, message: { type: string }, requestId: { type: string } }
+  responses:
+    Invalid: { description: Invalid input, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    NotFound: { description: Not found, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+

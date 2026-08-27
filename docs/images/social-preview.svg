@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">HTTP Repro Lab</title><desc id="desc">HAR to reproduce, compare, minimize, and share</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06131f"/><stop offset=".55" stop-color="#103a50"/><stop offset="1" stop-color="#14352f"/></linearGradient><linearGradient id="accent"><stop stop-color="#5eead4"/><stop offset="1" stop-color="#67e8f9"/></linearGradient></defs>
+  <rect width="1280" height="640" rx="40" fill="url(#bg)"/><g opacity=".14" stroke="#a7f3d0"><path d="M0 100h1280M0 200h1280M0 300h1280M0 400h1280M0 500h1280M160 0v640M320 0v640M480 0v640M640 0v640M800 0v640M960 0v640M1120 0v640"/></g>
+  <text x="90" y="160" fill="#5eead4" font-family="system-ui,sans-serif" font-size="25" font-weight="700" letter-spacing="5">PRIVACY-FIRST API DEBUGGING</text>
+  <text x="90" y="285" fill="#f0fdfa" font-family="system-ui,sans-serif" font-size="86" font-weight="800" letter-spacing="-4">HTTP REPRO LAB</text>
+  <text x="90" y="375" fill="#cbd5e1" font-family="system-ui,sans-serif" font-size="38">HAR → Reproduce → Compare → Minimize → Share</text>
+  <rect x="90" y="445" width="535" height="72" rx="18" fill="none" stroke="url(#accent)" stroke-width="3"/><text x="126" y="492" fill="#a7f3d0" font-family="ui-monospace,monospace" font-size="25">NO CLOUD · NO TELEMETRY · SAFE BY DEFAULT</text>
+  <g transform="translate(1000 320)" fill="none" stroke="#5eead4" stroke-width="8"><circle r="118" opacity=".25"/><path d="M-65 0h130M0-65v130"/><circle r="18" fill="#5eead4"/></g>
+</svg>
+
