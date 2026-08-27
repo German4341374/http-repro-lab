@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling==1.28.0"]
+requires = ["hatchling==1.32.0"]
 build-backend = "hatchling.build"
 
 [project]
@@ -7,10 +7,10 @@ name = "http-repro-minimizer"
 version = "0.1.0"
 description = "Deterministic request minimization for HTTP Repro Lab"
 requires-python = ">=3.12"
-dependencies = ["pydantic==2.12.5"]
+dependencies = ["pydantic==2.13.4"]
 
 [project.optional-dependencies]
-dev = ["mypy==1.19.1", "pytest==9.0.3", "ruff==0.14.10"]
+dev = ["mypy==2.3.1", "pytest==9.1.1", "ruff==0.16.4"]
 
 [project.scripts]
 http-repro-minimize = "http_repro_minimizer.cli:main"
