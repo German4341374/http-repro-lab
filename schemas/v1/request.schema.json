@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/German4341374/http-repro-lab/schemas/v1/request.schema.json",
+  "title": "HTTP Repro Lab RequestSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "method", "url", "headers", "body", "timeoutMs"],
+  "properties": {
+    "schemaVersion": { "const": "1" },
+    "method": { "type": "string", "pattern": "^[A-Z]+$" },
+    "url": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "host", "path", "query"],
+      "properties": {
+        "scheme": { "enum": ["http", "https"] },
+        "host": { "type": "string", "minLength": 1 },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "path": { "type": "string", "pattern": "^/" },
+        "query": { "type": "array", "items": { "$ref": "#/$defs/nameValue" } }
+      }
+    },
+    "headers": { "type": "array", "items": { "$ref": "#/$defs/nameValue" } },
+    "body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["none", "text", "json", "form", "multipart", "binary-metadata"] },
+        "content": {}
+      }
+    },
+    "timeoutMs": { "type": "integer", "minimum": 1, "maximum": 300000 },
+    "provenance": { "type": "object", "additionalProperties": { "type": "string" } }
+  },
+  "$defs": {
+    "nameValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "value": { "type": "string" }
+      }
+    }
+  }
+}
+

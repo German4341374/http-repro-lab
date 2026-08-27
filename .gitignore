@@ -1,0 +1,42 @@
+# Build outputs
+/bin/
+/dist/
+/coverage/
+*.exe
+*.test
+
+# Dependencies and caches
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+target/
+obj/
+.gradle/
+vendor/
+
+# Runtime data and secrets
+.env
+.env.*
+!.env.example
+.repro-workspace/
+data/
+*.pem
+*.key
+*.p12
+
+# Database and infrastructure state
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+!*.tfvars.example
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
