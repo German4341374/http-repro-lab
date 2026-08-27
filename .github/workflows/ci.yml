@@ -34,7 +34,8 @@ jobs:
         with: { python-version: '3.12', cache: pip, cache-dependency-path: tools/request-minimizer-python/pyproject.toml }
       - run: python -m pip install -e 'tools/request-minimizer-python[dev]'
       - run: ruff check tools/request-minimizer-python
-      - run: mypy --config-file tools/request-minimizer-python/pyproject.toml
+      - run: mypy
+        working-directory: tools/request-minimizer-python
       - run: pytest tools/request-minimizer-python
   dotnet:
     runs-on: ubuntu-24.04
@@ -61,4 +62,3 @@ jobs:
       - run: composer audit
       - run: composer test
       - run: composer analyse
-

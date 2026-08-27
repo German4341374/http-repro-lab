@@ -10,7 +10,7 @@ Passed commands:
 - Python Ruff, strict mypy, and 11 Pytest tests
 - `.NET` Release test run: 2 passed
 - Maven verify: 2 JUnit tests passed
-- PHPUnit: 2 tests / 2 assertions; PHPStan level max passed; Composer reported no PHP advisories
+- PHPUnit: 3 tests / 3 assertions; PHPStan level max passed; Composer reported no PHP advisories
 - `docker compose config --quiet`
 - `actionlint` and configured `yamllint`
 - Gitleaks 8.28.0 scanned all local commits and reported no leaks

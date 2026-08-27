@@ -9,6 +9,12 @@ use PHPUnit\Framework\TestCase;
 
 final class ReproRunnerTest extends TestCase
 {
+    public function testRejectsEmptyUrl(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new ReproRunner())->execute('GET', '', [], null, 1000);
+    }
+
     public function testRejectsUnsupportedScheme(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -21,4 +27,3 @@ final class ReproRunnerTest extends TestCase
         (new ReproRunner())->execute('GET', 'https://example.invalid', [], null, 0);
     }
 }
-

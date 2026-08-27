@@ -43,6 +43,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: github/codeql-action/init@5ba2889ada762081db2c4f32a729827dce632c7b # v3
         with: { languages: '${{ matrix.language }}' }
-      - uses: github/codeql-action/autobuild@5ba2889ada762081db2c4f32a729827dce632c7b # v3
+      - if: matrix.language == 'go'
+        run: go build ./cmd/http-repro ./cmd/mock-api
+      - if: matrix.language == 'java-kotlin'
+        run: mvn -B -f runners/java-repro-runner/pom.xml -DskipTests package
+      - if: matrix.language == 'csharp'
+        run: dotnet build runners/dotnet-repro-runner/src/HttpRepro.Runner/HttpRepro.Runner.csproj --configuration Release
       - uses: github/codeql-action/analyze@5ba2889ada762081db2c4f32a729827dce632c7b # v3
-

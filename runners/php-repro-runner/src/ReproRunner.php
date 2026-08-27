@@ -12,6 +12,9 @@ final class ReproRunner
      */
     public function execute(string $method, string $url, array $headers, ?string $body, int $timeoutMs): array
     {
+        if ($url === '') {
+            throw new \InvalidArgumentException('URL must not be empty.');
+        }
         $scheme = parse_url($url, PHP_URL_SCHEME);
         if (!is_string($scheme) || !in_array($scheme, ['http', 'https'], true)) {
             throw new \InvalidArgumentException('Only HTTP and HTTPS URLs are supported.');
