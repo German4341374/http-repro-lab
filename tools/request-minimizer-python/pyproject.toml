@@ -10,7 +10,7 @@ requires-python = ">=3.12"
 dependencies = ["pydantic==2.12.5"]
 
 [project.optional-dependencies]
-dev = ["mypy==1.19.1", "pytest==9.0.2", "ruff==0.14.10"]
+dev = ["mypy==1.19.1", "pytest==9.0.3", "ruff==0.14.10"]
 
 [project.scripts]
 http-repro-minimize = "http_repro_minimizer.cli:main"
@@ -34,4 +34,3 @@ python_version = "3.12"
 strict = true
 packages = ["http_repro_minimizer"]
 mypy_path = "src"
-
