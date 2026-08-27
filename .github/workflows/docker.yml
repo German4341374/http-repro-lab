@@ -9,6 +9,14 @@ concurrency:
 permissions:
   contents: read
 jobs:
+  dockerfile-lint:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix: { dockerfile: [Dockerfile, apps/api/Dockerfile] }
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
+        with: { dockerfile: '${{ matrix.dockerfile }}', failure-threshold: error }
   build-and-scan:
     runs-on: ubuntu-24.04
     steps:
@@ -35,4 +43,3 @@ jobs:
         run: docker compose logs --no-color
       - if: always()
         run: docker compose down -v --remove-orphans
-
