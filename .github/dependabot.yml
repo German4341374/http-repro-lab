@@ -2,30 +2,65 @@ version: 2
 updates:
   - package-ecosystem: gomod
     directory: /
-    schedule: { interval: weekly }
-    groups: { go-dependencies: { patterns: ['*'] } }
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: npm
     directory: /apps/api
-    schedule: { interval: weekly }
-    groups: { node-dependencies: { patterns: ['*'] } }
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: pip
     directory: /tools/request-minimizer-python
-    schedule: { interval: weekly }
-    groups: { python-dependencies: { patterns: ['*'] } }
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: maven
     directory: /runners/java-repro-runner
-    schedule: { interval: weekly }
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: nuget
     directory: /runners/dotnet-repro-runner
-    schedule: { interval: weekly }
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: composer
     directory: /runners/php-repro-runner
-    schedule: { interval: weekly }
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: github-actions
     directory: /
-    schedule: { interval: weekly }
-    groups: { actions: { patterns: ['*'] } }
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
   - package-ecosystem: docker
     directory: /
-    schedule: { interval: weekly }
-
+    schedule: {interval: weekly}
+    open-pull-requests-limit: 0
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
