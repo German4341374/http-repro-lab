@@ -1,15 +1,16 @@
 # HTTP Repro Lab
 
-Turn HAR, cURL, Postman and raw HTTP into safe, reproducible API test cases.
+Have a failing request in a HAR file, a cURL command, or a Postman collection?
+HTTP Repro Lab helps turn it into a test you can run again. You can inspect the request,
+replace credentials with placeholders, compare responses, and export a small client.
 
-Offline-first. Privacy-first. Multi-language.
+Imports are handled as data, not shell commands. Work stays local by default, and outbound
+requests go through the configured network rules.
 
 [![CI](https://github.com/German4341374/http-repro-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/German4341374/http-repro-lab/actions/workflows/ci.yml)
 [![Integration](https://github.com/German4341374/http-repro-lab/actions/workflows/integration.yml/badge.svg)](https://github.com/German4341374/http-repro-lab/actions/workflows/integration.yml)
 [![Security](https://github.com/German4341374/http-repro-lab/actions/workflows/security.yml/badge.svg)](https://github.com/German4341374/http-repro-lab/actions/workflows/security.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
-
-HTTP Repro Lab is a local developer workbench for answering a difficult support question: _what request actually happened, what sensitive data does it contain, and can the failure be reproduced safely?_ It imports HTTP evidence as data, creates a canonical request, replaces credentials with placeholders, applies explicit network safety policy, and produces evidence-backed comparisons and executable repro clients.
 
 > [!WARNING]
 > HAR files can contain cookies, access tokens, personal data, and complete request bodies. Sanitization reduces risk; it cannot prove an artifact is safe to publish. Review every exported file and rotate credentials that crossed an unintended trust boundary.
